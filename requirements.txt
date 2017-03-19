@@ -1,0 +1,8 @@
+django
+django-parler
+django-hvad
+nece
+django-modeltranslation
+django-i18nfield
+django-klingon
+psycopg2
