@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'hvad',
     'klingon',
     'movies',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
