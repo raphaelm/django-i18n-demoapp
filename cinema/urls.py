@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from movies.views import forms
+
 urlpatterns = [
+    url(r'^forms/(?P<lng>[^/]+)/', forms),
     url(r'^admin/', admin.site.urls),
 ]
