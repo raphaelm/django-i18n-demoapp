@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from i18nfield.strings import LazyI18nString
 
-from movies.models import HvadMovie, ParlerMovie, NeceMovie, ModeltransMovie, I18nFieldMovie, KlingonMovie
+from movies.models import HvadMovie, ParlerMovie, NeceMovie, ModeltranslationMovie, I18nFieldMovie, KlingonMovie
 
 
 class Command(BaseCommand):
@@ -34,8 +34,8 @@ class Command(BaseCommand):
         movie.translate('it', title='Angeli e demoni')
         movie.save()
 
-        ModeltransMovie.objects.all().delete()
-        ModeltransMovie.objects.create(
+        ModeltranslationMovie.objects.all().delete()
+        ModeltranslationMovie.objects.create(
             title_en='Angels and Daemons',
             title_it='Angeli e demoni',
             year=2009

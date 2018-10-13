@@ -1,9 +1,12 @@
 django
 django-parler
-django-hvad
+-e git+https://github.com/tback/django-hvad.git@dev/hvad2#egg=django-hvad
 nece
-django-modeltranslation
+django-modeltranslation==0.13-beta1
 django-i18nfield
-django-klingon
 psycopg2
 django-extensions
+django-modeltrans
+django-translated-fields
+faker
+

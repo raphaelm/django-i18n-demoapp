@@ -6,7 +6,8 @@ from django.utils import translation
 from faker import Faker
 from i18nfield.strings import LazyI18nString
 
-from movies.models import HvadMovie, ParlerMovie, NeceMovie, ModeltransMovie, I18nFieldMovie, KlingonMovie
+from movies.models import HvadMovie, ParlerMovie, NeceMovie, ModeltranslationMovie, I18nFieldMovie, \
+    ModeltransMovie, TranslatedFieldsMovie
 
 
 class Command(BaseCommand):
@@ -38,7 +39,7 @@ for m in HvadMovie.objects.language('it').all():
 for m in HvadMovie.objects.language('it').all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
 
         ParlerMovie.objects.all().delete()
         for i in range(N):
@@ -59,7 +60,7 @@ for m in ParlerMovie.objects.language('it').all():
 for m in ParlerMovie.objects.language('it').all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
 
         NeceMovie.objects.all().delete()
         for i in range(N):
@@ -79,26 +80,26 @@ for m in NeceMovie.objects.language('it').all():
 for m in NeceMovie.objects.language('it').all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
 
-        ModeltransMovie.objects.all().delete()
+        ModeltranslationMovie.objects.all().delete()
         for i in range(N):
-            ModeltransMovie.objects.create(
+            ModeltranslationMovie.objects.create(
                 title_en=fake.text(max_nb_chars=140),
                 title_it='it' + fake_it.text(max_nb_chars=140),
                 year=fake.year()
             )
 
-        print("Modeltrans", timeit.timeit("""
-for m in ModeltransMovie.objects.all():
+        print("Modeltranslation", timeit.timeit("""
+for m in ModeltranslationMovie.objects.all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
 """, globals=globals(), number=1))
-        print("Modeltrans", timeit.timeit("""
-for m in ModeltransMovie.objects.all():
+        print("Modeltranslation", timeit.timeit("""
+for m in ModeltranslationMovie.objects.all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
 
         I18nFieldMovie.objects.all().delete()
         for i in range(N):
@@ -119,23 +120,43 @@ for m in I18nFieldMovie.objects.all():
 for m in I18nFieldMovie.objects.all():
     if not str(m.title).startswith('it'):
         raise ValueError(m.title)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
 
-        KlingonMovie.objects.all().delete()
+        ModeltransMovie.objects.all().delete()
         for i in range(N):
-            movie = KlingonMovie.objects.create(
+            movie = ModeltransMovie.objects.create(
                 title=fake.text(max_nb_chars=140),
                 year=2009
             )
-            movie.set_translation('it', 'title', 'it' + fake_it.text(max_nb_chars=140))
+            movie.title_it = 'it' + fake_it.text(max_nb_chars=140)
+            movie.save()
 
-        print("Klingon", timeit.timeit("""
-for m in KlingonMovie.objects.all():
-    if not str(m.get_translation('it', 'title')).startswith('it'):
+        print("Modeltrans", timeit.timeit("""
+for m in ModeltransMovie.objects.all():
+    if not m.title_it.startswith('it'):
         raise ValueError(m)
 """, globals=globals(), number=1))
-        print("Klingon", timeit.timeit("""
-for m in KlingonMovie.objects.all():
-    if not str(m.get_translation('it', 'title')).startswith('it'):
+        print("Modeltrans", timeit.timeit("""
+for m in ModeltransMovie.objects.all():
+    if not m.title_it.startswith('it'):
         raise ValueError(m)
-""", globals=globals(), number=Nruns)/Nruns)
+""", globals=globals(), number=Nruns) / Nruns)
+
+        TranslatedFieldsMovie.objects.all().delete()
+        for i in range(N):
+            movie = TranslatedFieldsMovie.objects.create(
+                title_en=fake.text(max_nb_chars=140),
+                title_it='it' + fake_it.text(max_nb_chars=140),
+                year=2009
+            )
+
+        print("TranslatedFields", timeit.timeit("""
+for m in TranslatedFieldsMovie.objects.all():
+    if not m.title_it.startswith('it'):
+        raise ValueError(m)
+""", globals=globals(), number=1))
+        print("TranslatedFields", timeit.timeit("""
+for m in TranslatedFieldsMovie.objects.all():
+    if not m.title_it.startswith('it'):
+        raise ValueError(m)
+""", globals=globals(), number=Nruns) / Nruns)

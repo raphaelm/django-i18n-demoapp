@@ -1,6 +1,6 @@
 from django.db import models
 
 
-class ModeltransMovie(models.Model):
+class ModeltranslationMovie(models.Model):
     year = models.IntegerField()
     title = models.CharField(max_length=190)

@@ -1,12 +1,13 @@
 from django.contrib import admin
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm
+from hvad.admin import TranslatableAdmin as HvadTranslatableAdmin
 from i18nfield import forms
-from klingon.admin import TranslationInline, TranslationInlineForm
 from modeltranslation.admin import TranslationAdmin as MTranslationAdmin
 from parler.admin import TranslatableAdmin as ParlerTranslatableAdmin
-from hvad.admin import TranslatableAdmin as HvadTranslatableAdmin
+from translated_fields import TranslatedFieldAdmin
 
-from movies.models import ParlerMovie, HvadMovie, NeceMovie, ModeltransMovie, KlingonMovie, I18nFieldMovie, ClassicMovie
+from movies.models import ParlerMovie, HvadMovie, NeceMovie, ModeltranslationMovie, ModeltransMovie, \
+    TranslatedFieldsMovie, I18nFieldMovie, ClassicMovie
 
 
 class ParlerAdmin(ParlerTranslatableAdmin):
@@ -17,22 +18,16 @@ class HvadAdmin(HvadTranslatableAdmin):
     pass
 
 
-class ModeltransAdmin(MTranslationAdmin):
+class ModeltranslationAdmin(MTranslationAdmin):
     pass
 
 
-class RichTranslationInlineForm(TranslationInlineForm):
-    widgets = {
-        'title': TextInput(attrs={'class': 'klingon-char-field'}),
-    }
+class ModeltransAdmin(admin.ModelAdmin):
+    pass
 
 
-class RichTranslationInline(TranslationInline):
-    form = RichTranslationInlineForm
-
-
-class KlingonAdmin(admin.ModelAdmin):
-    inlines = [RichTranslationInline]
+class MTranslatedFieldAdmin(TranslatedFieldAdmin, admin.ModelAdmin):
+    pass
 
 
 class I18nFieldForm(ModelForm):
@@ -48,11 +43,12 @@ class I18nFieldForm(ModelForm):
 class I18nFieldAdmin(admin.ModelAdmin):
     form = I18nFieldForm
 
+
 admin.site.register(ParlerMovie, ParlerAdmin)
 admin.site.register(HvadMovie, HvadAdmin)
 admin.site.register(NeceMovie)
 admin.site.register(ClassicMovie)
+admin.site.register(ModeltranslationMovie, ModeltranslationAdmin)
 admin.site.register(ModeltransMovie, ModeltransAdmin)
-admin.site.register(KlingonMovie, KlingonAdmin)
+admin.site.register(TranslatedFieldsMovie, MTranslatedFieldAdmin)
 admin.site.register(I18nFieldMovie, I18nFieldAdmin)
-

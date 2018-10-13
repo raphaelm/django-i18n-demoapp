@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'modeltrans',
     'parler',
     'hvad',
-    'klingon',
     'movies',
     'django_extensions'
 ]
